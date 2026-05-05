@@ -11,73 +11,75 @@ struct HomeView: View {
     @State private var habitArray: [HabitModel] = []
     @State private var isEnabled = false
 
-
-    
     var body: some View {
         NavigationStack {
             VStack {
                 HStack {
                     Text("Habit Tracker")
+                        .foregroundColor((Color("headingtext")))
+                        .font(.system(size: 28))
+                        .fontWeight(.bold)
+
                     Spacer()
                     NavigationLink(destination: AddHabitView(habitArray: $habitArray)) {
                         Image(systemName: "plus")
                             .padding()
-                            .foregroundColor(.white)
-                            .background(Color.blue)
+                            .foregroundColor(Color("background"))
+                            .background(Color("button"))
                             .cornerRadius(25)
                     }
                 }
                 .padding()
-                Text(Date.now, format: .dateTime.weekday(.wide).day().month())
-                    .padding(.bottom, 40)
-                
                 HStack {
-                    Text("Drink Water")
+                    Text(Date.now, format: .dateTime.weekday(.wide).day().month())
+                        .foregroundColor(Color("bodytext"))
+                        .padding(.bottom, 20)
+                        .font(.system(size: 20))
+                        .fontWeight(.semibold)
                     Spacer()
-                    Toggle("Is habit complete", isOn: $isEnabled)
-                        .labelsHidden()
                 }
                 .padding()
-                .foregroundColor(.white)
-                .background(Color.blue)
-                .cornerRadius(25)
                 
-                VStack {
-                    ForEach(habitArray) { habit in
-                        Button(action: {
-                            // viewModel.navigateToSelectedBook(with: book)
-                        }, label: {
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    // Book title
-                                    Text(habit.habitName)
-                                        .foregroundColor(Color.white)
-                                        .font(Font.custom("Iowan Old Style", size: 18))
-                                        .multilineTextAlignment(.leading)
+                if habitArray.isEmpty {
+                    Text("Looks like you don't have any habits. Why not add one?")
+                        .padding(5.0)
+                        .foregroundColor(Color("bodytext"))
+                        .font(.system(size: 20))
+                } else {
+                    VStack {
+                        ForEach(habitArray) { habit in
+                            Button(action: {
+                                // viewModel.navigateToSelectedBook(with: book)
+                            }, label: {
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        // Book title
+                                        Text(habit.habitName)
+                                            .foregroundColor((Color("bodytext")))
+                                            .font(.system(size: 18))
+                                            .multilineTextAlignment(.leading)
+                                    }
+                                    Image(systemName: habit.habitIcon.systemImage)
+                                        .foregroundColor(habit.habitIcon.color)
+                                        .frame(width: 30, height: 25)
+                                    Spacer()
+
                                 }
-                                Spacer()
-                                Image(systemName: habit.habitIcon.systemImage)
-                                    .resizable()
-                                    .frame(width: 30, height: 25)
-                                    .foregroundColor(Color.blue)
-                            }
-                            .padding()
-                            .background(Color.red)
-                            .cornerRadius(8)
-                        })
+                                .padding()
+                                .background((Color("rows")))
+                                .cornerRadius(8)
+                            })
+                        }
                     }
                 }
                 Spacer()
-
-                Text("\(habitArray.count)")
-
-                
             }
             .padding()
-            .background(Color.yellow)
+            .background(Color("background"))
         }
     }
 }
+
 #Preview {
     HomeView()
 }

@@ -44,11 +44,11 @@ enum Icon: CaseIterable, Identifiable {
 
     var color: Color {
         switch self {
-        case .water: return .blue
-        case .movement: return .green
-        case .read: return .orange
-        case .eat: return .red
-        case .meditate: return .purple
+        case .water:    return Color("waterIcon")  // dusty blue
+        case .movement: return Color("movementIcon")  // terracotta
+        case .read:     return Color("readIcon")  // warm sand
+        case .eat:      return Color("eatIcon")  // burnt umber
+        case .meditate: return Color("meditateIcon")  // muted mauve
         }
     }
 }

@@ -10,38 +10,77 @@ import SwiftUI
 struct AddHabitView: View {
     @State private var habit: String = ""
     @State private var selectedIcon: Icon?
+    @State var showSheet = false
     @Binding var habitArray: [HabitModel]
+    @Environment(\.dismiss) var dismiss
 
+    
+    func checkHabitEmpty() {
+        if habit.isEmpty || selectedIcon == nil {
+            showSheet = true
+        } else {
+            showSheet = false
+        }
+    }
 
     var body: some View {
         VStack {
-        
+
             Text("Add Habit")
-                .font(.title)
+                .foregroundColor((Color("headingtext")))
+                .font(.system(size: 28))
+                .fontWeight(.bold)
+                .padding(.bottom, 20)
 
             HStack {
                 Text("Habit Name")
+                    .foregroundColor((Color("headingtext")))
+                    .fontWeight(.semibold)
                     .font(.system(size: 20))
 
+                TextField("e.g. Drink Water", text: $habit)
+                    .foregroundColor(Color("bodytext"))
+                    .padding()
+                    .background(Color("rows"))
+                    .font(.system(size: 20))
+                    .cornerRadius(10)
                 
                 Spacer()
-                TextField("e.g. Drink Water", text: $habit)
-                    .font(.system(size: 20))
-
             }
-            .padding(30.0)
-            
+            .padding(.bottom, 40)
+        
             Button(action: {
-                habitArray.append(HabitModel(habitName: habit, habitIcon: selectedIcon ?? .water))
+                if habit.isEmpty || selectedIcon == nil {
+                    showSheet = true
+                } else {
+                    habitArray.append(HabitModel(habitName: habit, habitIcon: selectedIcon ?? .water))
+                    dismiss()
+                }
+                
             }, label: {
                 Text("Add Habit")
                     .font(.system(size: 20))
                     .padding()
-                    .foregroundColor(.white)
-                    .background(Color.blue)
+                    .foregroundColor((Color("darktext")))
+                    .background((Color("button")))
                     .cornerRadius(25)
             })
+            .padding(.bottom, 40)
+            .sheet(isPresented: $showSheet) {
+                VStack(spacing: 10) {
+                    Text("Oops! Make sure you add a habit and select an icon")
+                        .foregroundColor(Color("bodytext"))
+                        .font(.system(size: 20))
+                }
+                .presentationDetents([.fraction(0.30)])
+                .presentationDragIndicator(.visible)
+            }
+            .padding()
+            .background(Color("background"))
+
             
+            
+
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 12) {
                 ForEach(Icon.allCases) { icon in
                     Button {
@@ -60,7 +99,7 @@ struct AddHabitView: View {
                         .background(
                             selectedIcon == icon
                             ? icon.color.opacity(0.15)
-                            : Color(.secondarySystemBackground)
+                            : (Color("rows"))
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 16)
@@ -71,12 +110,14 @@ struct AddHabitView: View {
                     .buttonStyle(.plain)
                 }
             }
-            
-            Spacer()
 
+            Spacer()
         }
         .padding()
-        .background(Color.yellow)
+        .background(Color("background"))
     }
 }
 
+#Preview {
+    AddHabitView(habitArray: .constant([]))
+}
