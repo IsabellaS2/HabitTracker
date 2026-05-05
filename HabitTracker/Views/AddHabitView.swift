@@ -14,7 +14,6 @@ struct AddHabitView: View {
     @Binding var habitArray: [HabitModel]
     @Environment(\.dismiss) var dismiss
 
-    
     func checkHabitEmpty() {
         if habit.isEmpty || selectedIcon == nil {
             showSheet = true
@@ -44,11 +43,11 @@ struct AddHabitView: View {
                     .background(Color("rows"))
                     .font(.system(size: 20))
                     .cornerRadius(10)
-                
+
                 Spacer()
             }
             .padding(.bottom, 40)
-        
+
             Button(action: {
                 if habit.isEmpty || selectedIcon == nil {
                     showSheet = true
@@ -56,7 +55,7 @@ struct AddHabitView: View {
                     habitArray.append(HabitModel(habitName: habit, habitIcon: selectedIcon ?? .water))
                     dismiss()
                 }
-                
+
             }, label: {
                 Text("Add Habit")
                     .font(.system(size: 20))
@@ -77,9 +76,6 @@ struct AddHabitView: View {
             }
             .padding()
             .background(Color("background"))
-
-            
-            
 
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 12) {
                 ForEach(Icon.allCases) { icon in
